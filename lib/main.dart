@@ -32,10 +32,13 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.light(
+        colorScheme: const ColorScheme.light(
           brightness: Brightness.light,
           primary: Color(0xff176FF2),
           primaryContainer: Color(0xff196EEE),
+          onPrimary: Color(0xFFFFFFFF),
+          surface: Color(0XffFFFFFF),
+          onSurface: Color(0xff0000),
         ),
       ),
       home: const RootScreen(),
