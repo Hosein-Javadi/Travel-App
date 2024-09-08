@@ -4,6 +4,7 @@ import 'package:aspen_explore_application/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       initialBinding: AppBindings(),
       title: 'Flutter Demo',
       theme: ThemeData(
+        textTheme: GoogleFonts.latoTextTheme(),
         colorScheme: const ColorScheme.light(
           brightness: Brightness.light,
           primary: Color(0xff176FF2),
