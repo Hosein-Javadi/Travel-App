@@ -1,4 +1,5 @@
 import 'package:aspen_explore_application/bindings/bindings.dart';
+import 'package:aspen_explore_application/screens/home/home.dart';
 import 'package:aspen_explore_application/screens/root.dart';
 import 'package:aspen_explore_application/screens/splash.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,16 @@ class MyApp extends StatelessWidget {
       initialBinding: AppBindings(),
       title: 'Flutter Demo',
       theme: ThemeData(
+        popupMenuTheme: PopupMenuThemeData(
+          position: PopupMenuPosition.over,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          iconColor: Color(0xff176FF2),
+        ),
+        iconTheme: IconThemeData(color: Color(0xff176FF2)),
         textTheme: GoogleFonts.latoTextTheme(
-          TextTheme(bodyMedium: TextStyle(color: Colors.white)),
+          const TextTheme(bodyMedium: TextStyle(color: Colors.black)),
         ),
         colorScheme: const ColorScheme.light(
           brightness: Brightness.light,
@@ -31,7 +40,7 @@ class MyApp extends StatelessWidget {
           primaryContainer: Color(0xff196EEE),
           onPrimary: Color(0xFFFFFFFF),
           surface: Color(0XffFFFFFF),
-          onSurface: Color(0xff0000),
+          onSurface: Color(0xff000000),
         ),
       ),
       getPages: [
@@ -42,9 +51,14 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/splash',
           page: () => const SplashScreen(),
-        )
+        ),
+        GetPage(name: '/home', page: () => const HomeScreen())
       ],
       initialRoute: viwedSplash != null ? '/root' : '/splash',
+
+
+     //For Test App Uncomment This Line
+     // // initialRoute: '/splash',
     );
   }
 }

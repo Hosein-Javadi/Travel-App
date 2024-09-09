@@ -1,5 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:aspen_explore_application/controllers/navigation_controller.dart';
+import 'package:aspen_explore_application/screens/details/details.dart';
+import 'package:aspen_explore_application/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +14,7 @@ class RootScreen extends StatelessWidget {
       bottomNavigationBar: GetBuilder<NavigationController>(
         id: 'Bottom_Navigation',
         builder: (controller) => AnimatedBottomNavigationBar(
+          height: 80,
           icons: const [
             Icons.home_filled,
             Icons.details,
@@ -31,6 +34,16 @@ class RootScreen extends StatelessWidget {
           onTap: (index) {
             controller.changePage(index);
           },
+        ),
+      ),
+      body: GetBuilder<NavigationController>(
+        id: 'Bottom_Navigation',
+        builder: (controller) => IndexedStack(
+          children: [
+            HomeScreen(),
+            DetailsScreen(),
+          ],
+          index: Get.find<NavigationController>().selectedIndex,
         ),
       ),
     );
