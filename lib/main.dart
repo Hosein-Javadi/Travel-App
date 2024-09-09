@@ -20,7 +20,9 @@ class MyApp extends StatelessWidget {
       initialBinding: AppBindings(),
       title: 'Flutter Demo',
       theme: ThemeData(
-        textTheme: GoogleFonts.latoTextTheme(),
+        textTheme: GoogleFonts.latoTextTheme(
+          TextTheme(bodyMedium: TextStyle(color: Colors.white)),
+        ),
         colorScheme: const ColorScheme.light(
           brightness: Brightness.light,
           primary: Color(0xff176FF2),
