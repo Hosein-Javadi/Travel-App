@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init('appBox');
   runApp(const MyApp());
 }
 
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool? viwedSplash = GetStorage().read('splashState');
+    final bool? viwedSplash = GetStorage('appBox').read('splashState');
+    print('test');
     return GetMaterialApp(
       initialBinding: AppBindings(),
       title: 'Flutter Demo',
