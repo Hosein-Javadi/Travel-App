@@ -2,24 +2,31 @@ import 'package:aspen_explore_application/data/database.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24, top: 46),
-          child: Column(
-            children: [
-              HomeScreenAppbar(),
-              SizedBox(
-                height: 36,
-              ),
-              HomeScreenPopularSection(),
-            ],
+    return Scaffold(
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24, top: 46),
+            child: Column(
+              children: [
+                HomeScreenAppbar(),
+                SizedBox(
+                  height: 36,
+                ),
+                HomeScreenPopularSection(),
+                SizedBox(
+                  height: 32,
+                ),
+                HomeScreenRecomendedSection(),
+              ],
+            ),
           ),
         ),
       ),
@@ -118,7 +125,7 @@ class HomeScreenPopularSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = AppDataBase.areas;
+    final data = AppDataBase.getAreas();
     return Column(
       children: [
         Row(
@@ -283,6 +290,116 @@ class PopularSlider extends StatelessWidget {
             fit: BoxFit.fill,
             'assets/img/image$realIndex.jpg'),
       ),
+    );
+  }
+}
+
+class HomeScreenRecomendedSection extends StatelessWidget {
+  const HomeScreenRecomendedSection({super.key});
+  @override
+  Widget build(BuildContext context) {
+    final data = AppDataBase.getRecomendedAreas();
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'Recommended',
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.5),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 14,
+        ),
+        CarouselSlider.builder(
+          itemCount: data.length,
+          itemBuilder: (context, index, realIndex) {
+            final item = data[realIndex];
+            return Container(
+              margin: EdgeInsets.only(right: 24),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Container(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: Image.asset(
+                            item.imageUrl,
+                            fit: BoxFit.fill,
+                            width: double.infinity,
+                            height: 150,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 25, right: 25),
+                          width: double.infinity,
+                          height: 4,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withOpacity(0.4),
+                                    blurRadius: 5,
+                                    spreadRadius: 4)
+                              ]),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: Text(
+                            item.title,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Positioned(
+                  //   child: Container(
+                  //     width: Get.width,
+                  //     height: 4,
+                  //     decoration: BoxDecoration(boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.black.withOpacity(0.4),
+                  //         blurRadius: 3,
+                  //         spreadRadius: 0.75,
+                  //       )
+                  //     ]),
+                  //   ),
+                  //   bottom: 0,
+                  //   left: 20,
+                  //   right: 20,
+                  // ),
+                ],
+              ),
+            );
+          },
+          options: CarouselOptions(
+            scrollPhysics: BouncingScrollPhysics(),
+            enableInfiniteScroll: false,
+            aspectRatio: 1.6,
+            padEnds: false,
+          ),
+        ),
+      ],
     );
   }
 }
