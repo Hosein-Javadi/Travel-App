@@ -104,7 +104,7 @@ class AppDataBase {
             liked: false),
       ];
 
- List<AreaEntity> get recommendedArea {
+  List<AreaEntity> get recommendedArea {
     return <AreaEntity>[
       AreaEntity(
           liked: true,
@@ -154,6 +154,18 @@ class AppDataBase {
           wc: false,
           pool: true,
           liked: false),
+      AreaEntity(
+          liked: true,
+          reviews: 700,
+          imageUrl: Assets.img.image1.path,
+          title: 'Tabiat Bridge',
+          likes: 4.6,
+          describtion:
+              'The bridge was designed by Diba Tensile Architecture (Leila Araghian and Alireza Behzadi). It has won several awards, including the Popular Choice Prize for Highways & Bridges from the Architizer A+ Awards, a global architectural competition based in New York. The bridge also won the 2016 Aga Khan Award for Architecture for its exemplary approach to an infrastructure project, "a breath of fresh air" according to the award jury.',
+          wifi: true,
+          dinner: true,
+          wc: true,
+          pool: false),
     ];
   }
 }

@@ -1,3 +1,4 @@
+import 'package:aspen_explore_application/Themes/Theme/themes.dart';
 import 'package:aspen_explore_application/bindings/bindings.dart';
 import 'package:aspen_explore_application/data/database.dart';
 import 'package:aspen_explore_application/screens/details/details.dart';
@@ -7,7 +8,6 @@ import 'package:aspen_explore_application/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   await WidgetsFlutterBinding();
@@ -24,31 +24,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialBinding: AppBindings(),
       title: 'Flutter Demo',
-      theme: ThemeData(
-        textButtonTheme: TextButtonThemeData(
-            style: ButtonStyle(
-          padding: WidgetStatePropertyAll(EdgeInsets.zero),
-        )),
-        popupMenuTheme: PopupMenuThemeData(
-          position: PopupMenuPosition.over,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          iconColor: Color(0xff176FF2),
-        ),
-        iconTheme: IconThemeData(color: Color(0xff176FF2)),
-        textTheme: GoogleFonts.latoTextTheme(
-          const TextTheme(bodyMedium: TextStyle(color: Colors.black)),
-        ),
-        colorScheme: const ColorScheme.light(
-          brightness: Brightness.light,
-          primary: Color(0xff176FF2),
-          primaryContainer: Color(0xff196EEE),
-          onPrimary: Color(0xFFFFFFFF),
-          surface: Color(0XffFFFFFF),
-          onSurface: Color(0xff000000),
-        ),
-      ),
+      theme: AppThemes.darkTheme,
       getPages: [
         GetPage(
           name: '/root',
@@ -67,10 +43,12 @@ class MyApp extends StatelessWidget {
           page: () => const DetailsScreen(),
         ),
       ],
-      initialRoute: viwedSplash != null ? '/root' : '/splash',
+
+      // Changed Shortly!
+      // initialRoute: viwedSplash != null ? '/root' : '/splash',
 
       //For Test App Uncomment This Line
-      // // initialRoute: '/splash',
+      initialRoute: '/splash',
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:aspen_explore_application/controllers/theme_controller.dart';
 import 'package:aspen_explore_application/data/database.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -100,6 +101,10 @@ class AppbarChangeThemeSection extends StatelessWidget {
         return <PopupMenuEntry>[
           PopupMenuItem(
             child: ListTile(
+              onTap: () {
+                Get.find<AppThemeController>().changeTheme(true);
+                Get.back();
+              },
               leading: Icon(
                 Icons.light_mode_outlined,
                 color: Theme.of(context).colorScheme.primary,
@@ -109,6 +114,10 @@ class AppbarChangeThemeSection extends StatelessWidget {
           ),
           PopupMenuItem(
             child: ListTile(
+              onTap: () {
+                Get.find<AppThemeController>().changeTheme(false);
+                Get.back();
+              },
               leading: Icon(
                 Icons.dark_mode_outlined,
                 color: Theme.of(context).colorScheme.primary,
@@ -234,8 +243,7 @@ class PopularSlider extends StatelessWidget {
                   Text(
                     item.title,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.surface,
-                        fontWeight: FontWeight.bold),
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -265,7 +273,7 @@ class PopularSlider extends StatelessWidget {
                       Text(
                         item.likes.toString(),
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.surface,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

@@ -17,23 +17,26 @@ class RootScreen extends StatelessWidget {
           id: 'Bottom_Navigation',
           builder: (controller) => AnimatedBottomNavigationBar(
             scaleFactor: 0,
+            splashColor: Colors.transparent,
+            splashRadius: 0,
             height: 80,
             icons: const [
               Icons.home_filled,
               Icons.details,
             ],
             shadow: BoxShadow(
-              color: Colors.black.withOpacity(0.25),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.25),
               blurRadius: 30,
-              spreadRadius: 20,
+              spreadRadius: 15,
             ),
             leftCornerRadius: 35,
             rightCornerRadius: 35,
             activeIndex: controller.selectedIndex,
             gapLocation: GapLocation.none,
             notchSmoothness: NotchSmoothness.defaultEdge,
-            activeColor: Colors.blue.shade700,
-            inactiveColor: Colors.grey[400],
+            activeColor: Theme.of(context).colorScheme.primary,
+            inactiveColor: Theme.of(context).colorScheme.onSurface,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             onTap: (index) {
               controller.addToHistory(controller.selectedIndex);
               controller.changePage(index);

@@ -258,7 +258,7 @@ class ImageSection extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Theme.of(context).colorScheme.surface,
+            color: Colors.white,
           ),
           child: Center(
             child: Padding(
@@ -266,7 +266,7 @@ class ImageSection extends StatelessWidget {
               child: Icon(
                 Icons.arrow_back_ios_new,
                 size: 24,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                color: Colors.black.withOpacity(0.4),
               ),
             ),
           ),
