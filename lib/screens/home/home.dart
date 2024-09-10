@@ -2,6 +2,8 @@ import 'package:aspen_explore_application/data/database.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -162,35 +164,44 @@ class PopularSlider extends StatelessWidget {
       itemCount: data.length,
       itemBuilder: (context, index, realIndex) {
         final item = data[realIndex];
-        return Container(
-          margin: EdgeInsets.only(right: 24, bottom: 14),
-          child: Stack(
-            children: [
-              imageSection(realIndex),
-              detailsSection(item, context),
-              Positioned(
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).colorScheme.primary,
-                        // .withOpacity(0.2),
-                        blurRadius: 15,
-                        spreadRadius: 3,
-                      ),
-                    ],
-                  ),
-                  height: 2,
-                ),
-                bottom: 0,
-                left: 25,
-                right: 25,
-              ),
-            ],
-          ),
-        );
+        return popularItem(item, realIndex, context);
       },
       options: carouselOptions(),
+    );
+  }
+
+  Container popularItem(AreaEntity item, int realIndex, BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(right: 24, bottom: 14),
+      child: GestureDetector(
+        onTap: () {
+          Get.toNamed('/details', arguments: {'item': item});
+        },
+        child: Stack(
+          children: [
+            imageSection(realIndex),
+            detailsSection(item, context),
+            Positioned(
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).colorScheme.primary,
+                      // .withOpacity(0.2),
+                      blurRadius: 15,
+                      spreadRadius: 3,
+                    ),
+                  ],
+                ),
+                height: 2,
+              ),
+              bottom: 0,
+              left: 25,
+              right: 25,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -320,76 +331,14 @@ class HomeScreenRecomendedSection extends StatelessWidget {
           itemCount: data.length,
           itemBuilder: (context, index, realIndex) {
             final item = data[realIndex];
-            return Container(
-              margin: EdgeInsets.only(right: 24),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Container(
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(24),
-                          child: Image.asset(
-                            item.imageUrl,
-                            fit: BoxFit.fill,
-                            width: double.infinity,
-                            height: 150,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 25, right: 25),
-                          width: double.infinity,
-                          height: 4,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface
-                                        .withOpacity(0.4),
-                                    blurRadius: 5,
-                                    spreadRadius: 4)
-                              ]),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2),
-                          child: Text(
-                            item.title,
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Positioned(
-                  //   child: Container(
-                  //     width: Get.width,
-                  //     height: 4,
-                  //     decoration: BoxDecoration(boxShadow: [
-                  //       BoxShadow(
-                  //         color: Colors.black.withOpacity(0.4),
-                  //         blurRadius: 3,
-                  //         spreadRadius: 0.75,
-                  //       )
-                  //     ]),
-                  //   ),
-                  //   bottom: 0,
-                  //   left: 20,
-                  //   right: 20,
-                  // ),
-                ],
-              ),
+            return RecomendedItem(
+              item: item,
+              onTap: () {
+                Get.toNamed(
+                  '/details',
+                  arguments: {'item': item},
+                );
+              },
             );
           },
           options: CarouselOptions(
@@ -400,6 +349,95 @@ class HomeScreenRecomendedSection extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class RecomendedItem extends StatelessWidget {
+  const RecomendedItem({
+    super.key,
+    required this.item,
+    required this.onTap,
+  });
+
+  final AreaEntity item;
+  final GestureTapCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(right: 24),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Container(
+                color: Theme.of(context).colorScheme.surface,
+              ),
+            ),
+            Positioned.fill(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: Image.asset(
+                      item.imageUrl,
+                      fit: BoxFit.fill,
+                      width: double.infinity,
+                      height: 150,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 25, right: 25),
+                    width: double.infinity,
+                    height: 4,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withOpacity(0.4),
+                              blurRadius: 5,
+                              spreadRadius: 4)
+                        ]),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 2),
+                    child: Text(
+                      item.title,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Positioned(
+            //   child: Container(
+            //     width: Get.width,
+            //     height: 4,
+            //     decoration: BoxDecoration(boxShadow: [
+            //       BoxShadow(
+            //         color: Colors.black.withOpacity(0.4),
+            //         blurRadius: 3,
+            //         spreadRadius: 0.75,
+            //       )
+            //     ]),
+            //   ),
+            //   bottom: 0,
+            //   left: 20,
+            //   right: 20,
+            // ),
+          ],
+        ),
+      ),
     );
   }
 }

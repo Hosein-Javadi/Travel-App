@@ -10,40 +10,49 @@ class RootScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: GetBuilder<NavigationController>(
-        id: 'Bottom_Navigation',
-        builder: (controller) => AnimatedBottomNavigationBar(
-          height: 80,
-          icons: const [
-            Icons.home_filled,
-            Icons.details,
-          ],
-          shadow: BoxShadow(
-            color: Colors.black.withOpacity(0.25),
-            blurRadius: 30,
-            spreadRadius: 20,
+    return WillPopScope(
+      onWillPop: () => Get.find<NavigationController>().onPopButtonClicked(),
+      child: Scaffold(
+        bottomNavigationBar: GetBuilder<NavigationController>(
+          id: 'Bottom_Navigation',
+          builder: (controller) => AnimatedBottomNavigationBar(
+            scaleFactor: 0,
+            height: 80,
+            icons: const [
+              Icons.home_filled,
+              Icons.details,
+            ],
+            shadow: BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              blurRadius: 30,
+              spreadRadius: 20,
+            ),
+            leftCornerRadius: 35,
+            rightCornerRadius: 35,
+            activeIndex: controller.selectedIndex,
+            gapLocation: GapLocation.none,
+            notchSmoothness: NotchSmoothness.defaultEdge,
+            activeColor: Colors.blue.shade700,
+            inactiveColor: Colors.grey[400],
+            onTap: (index) {
+              controller.addToHistory(controller.selectedIndex);
+              controller.changePage(index);
+            },
           ),
-          leftCornerRadius: 35,
-          rightCornerRadius: 35,
-          activeIndex: controller.selectedIndex,
-          gapLocation: GapLocation.none,
-          notchSmoothness: NotchSmoothness.defaultEdge,
-          activeColor: Colors.blue.shade700,
-          inactiveColor: Colors.grey[400],
-          onTap: (index) {
-            controller.changePage(index);
-          },
         ),
-      ),
-      body: GetBuilder<NavigationController>(
-        id: 'Bottom_Navigation',
-        builder: (controller) => IndexedStack(
-          children: [
-            HomeScreen(),
-            DetailsScreen(),
-          ],
-          index: Get.find<NavigationController>().selectedIndex,
+        body: GetBuilder<NavigationController>(
+          id: 'Bottom_Navigation',
+          builder: (controller) => IndexedStack(
+            children: [
+              HomeScreen(
+                key: controller.screenKeys[0],
+              ),
+              DetailsScreen(
+                key: controller.screenKeys[1],
+              ),
+            ],
+            index: Get.find<NavigationController>().selectedIndex,
+          ),
         ),
       ),
     );
