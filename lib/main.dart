@@ -10,6 +10,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
+  await WidgetsFlutterBinding();
   await GetStorage.init(AppDataBase.boxName);
   runApp(const MyApp());
 }
