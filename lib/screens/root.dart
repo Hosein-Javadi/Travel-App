@@ -14,6 +14,7 @@ class RootScreen extends StatelessWidget {
       bottomNavigationBar: GetBuilder<NavigationController>(
         id: 'Bottom_Navigation',
         builder: (controller) => AnimatedBottomNavigationBar(
+          scaleFactor: 0,
           height: 80,
           icons: const [
             Icons.home_filled,
@@ -39,7 +40,7 @@ class RootScreen extends StatelessWidget {
       body: GetBuilder<NavigationController>(
         id: 'Bottom_Navigation',
         builder: (controller) => IndexedStack(
-          children: [
+          children: const [
             HomeScreen(),
             DetailsScreen(),
           ],
