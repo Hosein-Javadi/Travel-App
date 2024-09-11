@@ -24,6 +24,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialBinding: AppBindings(),
       title: 'Flutter Demo',
+      themeMode: Get.theme.brightness == Brightness.dark
+          ? ThemeMode.dark
+          : ThemeMode.light,
       theme: AppThemes.darkTheme,
       getPages: [
         GetPage(
