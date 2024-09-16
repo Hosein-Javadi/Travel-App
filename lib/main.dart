@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {
-  await WidgetsFlutterBinding();
+  await WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init(AppDataBase.boxName);
   runApp(const MyApp());
 }
@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final bool? viwedSplash = GetStorage('appBox').read('splashState');
     return GetMaterialApp(
       initialBinding: AppBindings(),
