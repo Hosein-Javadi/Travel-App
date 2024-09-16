@@ -35,67 +35,71 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context).copyWith(
-        textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.white)));
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          image: DecorationImage(
-            image: ExactAssetImage(Assets.img.background.path),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Text(
-                'Iran',
-                style: TextStyle(fontSize: 160),
-              ),
+    final themeData = Theme.of(context);
+    return Theme(
+      data: ThemeData(
+          textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.white))),
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: DecorationImage(
+              image: ExactAssetImage(Assets.img.background.path),
+              fit: BoxFit.cover,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  bottom: 32, top: 16, right: 24, left: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'See',
-                    style: TextStyle(
-                      fontSize: 32,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Text(
+                  'Iran',
+                  style: TextStyle(fontSize: 160),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    bottom: 32, top: 16, right: 24, left: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'See',
+                      style: TextStyle(
+                        fontSize: 32,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Tourism Areas',
-                    style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  CustomButton(
-                    ontap: () async {
-                      final box = GetStorage('appBox');
-                      await box.write('splashState', true);
-                      Get.offNamed('/root');
-                    },
-                    themeData: themeData,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Center(
-                        child: Text(
-                          'Explore',
-                          style: TextStyle(fontSize: 18),
+                    Text(
+                      'Tourism Areas',
+                      style:
+                          TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    CustomButton(
+                      ontap: () async {
+                        final box = GetStorage('appBox');
+                        await box.write('splashState', true);
+                        Get.offNamed('/root');
+                      },
+                      themeData: themeData,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Center(
+                          child: Text(
+                            'Explore',
+                            style: TextStyle(fontSize: 18),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

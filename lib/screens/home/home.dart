@@ -1,8 +1,13 @@
 import 'package:aspen_explore_application/controllers/theme_controller.dart';
-import 'package:aspen_explore_application/data/database.dart';
+import 'package:aspen_explore_application/data/common/common.dart';
+import 'package:aspen_explore_application/data/repository/main_repository.dart';
+import 'package:aspen_explore_application/data/sources/remote_source.dart';
+import 'package:aspen_explore_application/objects/Area.dart';
+import 'package:aspen_explore_application/screens/home/bloc/home_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -10,25 +15,33 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, top: 46),
-            child: Column(
-              children: [
-                HomeScreenAppbar(),
-                SizedBox(
-                  height: 36,
-                ),
-                HomeScreenPopularSection(),
-                SizedBox(
-                  height: 32,
-                ),
-                HomeScreenRecomendedSection(),
-              ],
+    return BlocProvider<HomeBloc>(
+      create: (context) {
+        final bloc = HomeBloc(AppRepository(
+            source: RemoteDataSource(dio: CommonDataBase.appDio)));
+        bloc.add(HomeStarted());
+        return bloc;
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 46),
+              child: Column(
+                children: [
+                  HomeScreenAppbar(),
+                  SizedBox(
+                    height: 36,
+                  ),
+                  HomeScreenPopularSection(),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  HomeScreenRecomendedSection(),
+                ],
+              ),
             ),
           ),
         ),
@@ -136,7 +149,6 @@ class HomeScreenPopularSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = AppDataBase.getAreas();
     return Column(
       children: [
         Row(
@@ -153,7 +165,25 @@ class HomeScreenPopularSection extends StatelessWidget {
         SizedBox(
           height: 12,
         ),
-        PopularSlider(data: data),
+        BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state is HomeLoading) {
+              return CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.onSurface,
+              );
+            } else if (state is HomeSuccess) {
+              return PopularSlider(data: state.popluarItems);
+            } else if (state is HomeError) {
+              return Center(
+                child: Text('State is Not Valid'),
+              );
+            } else {
+              return Center(
+                child: Text('State is Not Valid'),
+              );
+            }
+          },
+        ),
       ],
     );
   }
@@ -188,7 +218,7 @@ class PopularSlider extends StatelessWidget {
         },
         child: Stack(
           children: [
-            imageSection(realIndex),
+            imageSection(item.imageUrl),
             detailsSection(item, context),
             Positioned(
               child: Container(
@@ -299,7 +329,7 @@ class PopularSlider extends StatelessWidget {
     );
   }
 
-  Positioned imageSection(int realIndex) {
+  Positioned imageSection(String imageUrl) {
     return Positioned.fill(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(36),
@@ -307,7 +337,7 @@ class PopularSlider extends StatelessWidget {
             alignment: Alignment.topCenter,
             scale: 3,
             fit: BoxFit.fill,
-            'assets/img/image$realIndex.jpg'),
+            imageUrl),
       ),
     );
   }
@@ -317,7 +347,6 @@ class HomeScreenRecomendedSection extends StatelessWidget {
   const HomeScreenRecomendedSection({super.key});
   @override
   Widget build(BuildContext context) {
-    final data = AppDataBase.getRecomendedAreas();
     return Column(
       children: [
         Row(
@@ -335,28 +364,50 @@ class HomeScreenRecomendedSection extends StatelessWidget {
         SizedBox(
           height: 14,
         ),
-        CarouselSlider.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index, realIndex) {
-            final item = data[realIndex];
-            return RecomendedItem(
-              item: item,
-              onTap: () {
-                Get.toNamed(
-                  '/details',
-                  arguments: {'item': item},
-                );
-              },
-            );
+        BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state is HomeLoading) {
+              return CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.onSurface,
+              );
+            } else if (state is HomeSuccess) {
+              return recomendedSlider(state.recomendedItems);
+            } else if (state is HomeError) {
+              return Center(
+                child: Text('State is Not Valid'),
+              );
+            } else {
+              return Center(
+                child: Text('State is Not Valid'),
+              );
+            }
           },
-          options: CarouselOptions(
-            scrollPhysics: BouncingScrollPhysics(),
-            enableInfiniteScroll: false,
-            aspectRatio: 1.6,
-            padEnds: false,
-          ),
         ),
       ],
+    );
+  }
+
+  CarouselSlider recomendedSlider(List<AreaEntity> data) {
+    return CarouselSlider.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index, realIndex) {
+        final item = data[realIndex];
+        return RecomendedItem(
+          item: item,
+          onTap: () {
+            Get.toNamed(
+              '/details',
+              arguments: {'item': item},
+            );
+          },
+        );
+      },
+      options: CarouselOptions(
+        scrollPhysics: BouncingScrollPhysics(),
+        enableInfiniteScroll: false,
+        aspectRatio: 1.6,
+        padEnds: false,
+      ),
     );
   }
 }

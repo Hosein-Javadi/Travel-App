@@ -1,47 +1,22 @@
+import 'package:aspen_explore_application/data/sources/main_source.dart';
 import 'package:aspen_explore_application/gen/assets.gen.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:aspen_explore_application/objects/Area.dart';
 
-class AppDataBase {
-  static const String popularBoxName = 'popularItems';
-  static const String recomendedBoxName = 'recomendedItems';
-  static const String boxName = 'appBox';
-
-  static List<AreaEntity> getAreas() {
-    final box = GetStorage(boxName).read(AppDataBase.popularBoxName);
-    if (box != null) {
-      final List<AreaEntity> areas = [];
-      (box as List).forEach((value) => areas.add(AreaEntity.fromMap(value)));
-
-      return areas;
-    }
-    return AppDataBase().areas;
-  }
-
-  static List<AreaEntity> getRecomendedAreas() {
-    final recbox = GetStorage(boxName).read(AppDataBase.recomendedBoxName);
-    if (recbox != null) {
-      final List<AreaEntity> areas = [];
-      (recbox as List).forEach((value) => areas.add(AreaEntity.fromMap(value)));
-
-      return areas;
-    }
-    return AppDataBase().recommendedArea;
-  }
-
+class LocalAppDataBase implements AppSources {
   static AreaEntity get ifnullItem => AreaEntity(
       liked: true,
-      reviews: 700,
+      reviews: 1200,
       imageUrl: Assets.img.image0.path,
       title: 'Tehran City',
-      likes: 5,
+      likes: 5.0,
       describtion:
           "Tehran was first chosen as the capital of Iran by Agha Mohammad Khan of the Qajar dynasty in 1786, because of its proximity to Iran's territories in the Caucasus, then separated from Iran in the Russo-Iranian Wars, to avoid the vying factions of the previously ruling Iranian dynasties. The capital has been moved several times throughout history, however, and Tehran became the 32nd capital of Persia. Large-scale construction works began in the 1920s, and Tehran became a destination for mass migrations from all over Iran since the 20th century",
       wifi: true,
       dinner: true,
-      wc: false,
-      pool: true);
+      wc: true,
+      pool: false);
 
-  List<AreaEntity> get areas => [
+  static List<AreaEntity> get areas => [
         AreaEntity(
             liked: true,
             reviews: 700,
@@ -104,7 +79,7 @@ class AppDataBase {
             liked: false),
       ];
 
-  List<AreaEntity> get recommendedArea {
+  static List<AreaEntity> get recommendedArea {
     return <AreaEntity>[
       AreaEntity(
           liked: true,
@@ -168,59 +143,16 @@ class AppDataBase {
           pool: false),
     ];
   }
-}
 
-class AreaEntity {
-  final String title;
-  final double likes;
-  final int reviews;
-  final String imageUrl;
-  final String describtion;
-  final bool liked;
-  final bool wifi;
-  final bool dinner;
-  final bool wc;
-  final bool pool;
-  AreaEntity({
-    required this.liked,
-    required this.imageUrl,
-    required this.title,
-    required this.likes,
-    required this.describtion,
-    required this.wifi,
-    required this.dinner,
-    required this.wc,
-    required this.pool,
-    required this.reviews,
-  });
-
-  static Map<String, dynamic> toMap(AreaEntity area) {
-    final Map<String, dynamic> map = {
-      'liked': area.liked,
-      'imageUrl': area.imageUrl,
-      'title': area.title,
-      'likes': area.likes,
-      'describtion': area.describtion,
-      'wifi': area.wifi,
-      'dinner': area.dinner,
-      'wc': area.wc,
-      'pool': area.pool,
-      'reviews': area.reviews,
-    };
-    return map;
-  }
-
-  static AreaEntity fromMap(Map<String, dynamic> map) {
-    return AreaEntity(
-        liked: map['liked'],
-        imageUrl: map['imageUrl'],
-        title: map['title'],
-        likes: map['likes'],
-        describtion: map['describtion'],
-        wifi: map['wifi'],
-        dinner: map['dinner'],
-        wc: map['wc'],
-        pool: map['pool'],
-        reviews: map['reviews']);
+  @override
+  Future<List<AreaEntity>> getAll(AreaSort sortType) async {
+    switch (sortType) {
+      case AreaSort.defaultSort:
+        return areas;
+      case AreaSort.recomendedSort:
+        return recommendedArea;
+      default:
+        return areas;
+    }
   }
 }

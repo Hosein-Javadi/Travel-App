@@ -1,5 +1,6 @@
 import 'package:aspen_explore_application/controllers/text_controller.dart';
-import 'package:aspen_explore_application/data/database.dart';
+import 'package:aspen_explore_application/data/sources/local_database.dart';
+import 'package:aspen_explore_application/objects/Area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,8 +10,9 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AreaEntity data =
-        Get.arguments != null ? Get.arguments['item'] : AppDataBase.ifnullItem;
+    final AreaEntity data = Get.arguments != null
+        ? Get.arguments['item']
+        : LocalAppDataBase.ifnullItem;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
