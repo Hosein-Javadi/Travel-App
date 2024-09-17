@@ -42,6 +42,7 @@ dependencies:
   carousel_slider: ^5.0.0
   dio: ^5.7.0
   flutter_bloc: ^8.1.6
+  backendless_sdk: ^8.0.0-alpha.28
 
 
 dev_dependencies:

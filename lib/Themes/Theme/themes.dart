@@ -6,9 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 class AppThemes {
   static ThemeData get lightTheme => ThemeData(
         textButtonTheme: TextButtonThemeData(
-            style: ButtonStyle(
-          padding: WidgetStatePropertyAll(EdgeInsets.zero),
-        )),
+          style: ButtonStyle(
+            padding: WidgetStatePropertyAll(EdgeInsets.zero),
+          ),
+        ),
         popupMenuTheme: PopupMenuThemeData(
           position: PopupMenuPosition.over,
           shape: RoundedRectangleBorder(
@@ -32,9 +33,10 @@ class AppThemes {
 
   static ThemeData get darkTheme => ThemeData(
         textButtonTheme: TextButtonThemeData(
-            style: ButtonStyle(
-          padding: WidgetStatePropertyAll(EdgeInsets.zero),
-        )),
+          style: ButtonStyle(
+            padding: WidgetStatePropertyAll(EdgeInsets.zero),
+          ),
+        ),
         popupMenuTheme: PopupMenuThemeData(
           position: PopupMenuPosition.over,
           shape: RoundedRectangleBorder(
