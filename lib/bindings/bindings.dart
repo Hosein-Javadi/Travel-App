@@ -9,6 +9,7 @@ class AppBindings extends Bindings {
   void dependencies() {
     Get.lazyPut(
       () => NavigationController(),
+      fenix: true,
     );
     Get.put(AppTextController());
 
@@ -16,8 +17,6 @@ class AppBindings extends Bindings {
       () => AppThemeController(),
     );
 
-    Get.lazyPut(
-      () => AuthController(),
-    );
+    Get.put(AuthController(), permanent: true);
   }
 }

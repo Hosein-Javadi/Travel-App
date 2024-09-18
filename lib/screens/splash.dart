@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:aspen_explore_application/gen/assets.gen.dart';
+import 'package:backendless_sdk/backendless_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -20,8 +21,13 @@ class _SplashScreenState extends State<SplashScreen> {
       Duration(seconds: 3),
       (timer) async {
         final box = GetStorage('appBox');
+        final user = await Backendless.userService.getCurrentUser(false);
         await box.write('splashState', true);
-        Get.offNamed('/root');
+        if (user != null) {
+          Get.offNamed('/root', arguments: {'user': user});
+        } else {
+          Get.offNamed('/auth');
+        }
       },
     );
     super.initState();
@@ -81,8 +87,16 @@ class _SplashScreenState extends State<SplashScreen> {
                     CustomButton(
                       ontap: () async {
                         final box = GetStorage('appBox');
+                        final user =
+                            await Backendless.userService.getCurrentUser(true);
                         await box.write('splashState', true);
-                        Get.offNamed('/root');
+                        if (user != null) {
+                          Get.offNamed('/root', arguments: {
+                            'user': user,
+                          });
+                        } else {
+                          Get.offNamed('/auth');
+                        }
                       },
                       themeData: themeData,
                       child: Padding(

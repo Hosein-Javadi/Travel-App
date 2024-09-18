@@ -10,9 +10,8 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AreaEntity data = Get.arguments != null
-        ? Get.arguments['item']
-        : LocalAppDataBase.ifnullItem;
+    final AreaEntity data =
+        Get.arguments['item'] ?? LocalAppDataBase.ifnullItem;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -230,7 +229,7 @@ class ImageSection extends StatelessWidget {
     return Stack(
       children: [
         image(),
-        if (Get.arguments != null) backIcon(context),
+        if (Get.arguments['item'] != null) backIcon(context),
         heartIcon(context),
       ],
     );

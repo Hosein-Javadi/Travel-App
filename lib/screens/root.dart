@@ -1,5 +1,6 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:aspen_explore_application/controllers/navigation_controller.dart';
+import 'package:aspen_explore_application/screens/account/account.dart';
 import 'package:aspen_explore_application/screens/details/details.dart';
 import 'package:aspen_explore_application/screens/home/home.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class RootScreen extends StatelessWidget {
             icons: const [
               Icons.home_filled,
               Icons.details,
+              Icons.account_circle_outlined
             ],
             shadow: BoxShadow(
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.25),
@@ -52,6 +54,9 @@ class RootScreen extends StatelessWidget {
               ),
               DetailsScreen(
                 key: controller.screenKeys[1],
+              ),
+              AccountScreen(
+                key: controller.screenKeys[2],
               ),
             ],
             index: Get.find<NavigationController>().selectedIndex,
