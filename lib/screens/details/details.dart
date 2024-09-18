@@ -10,9 +10,7 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AreaEntity data = Get.arguments != null
-        ? Get.arguments['item']
-        : LocalAppDataBase.ifnullItem;
+    final AreaEntity data = LocalAppDataBase.ifnullItem;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

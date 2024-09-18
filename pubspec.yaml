@@ -43,6 +43,7 @@ dependencies:
   dio: ^5.7.0
   flutter_bloc: ^8.1.6
   backendless_sdk: ^8.0.0-alpha.28
+  email_validator: ^3.0.0
 
 
 dev_dependencies:
