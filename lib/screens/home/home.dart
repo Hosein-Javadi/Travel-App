@@ -229,12 +229,9 @@ class PopularSlider extends StatelessWidget {
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      color: Get.theme.colorScheme.brightness == Brightness.dark
-                          ? (Common.convertStringToColor(item.darkShadowcolor))
-                          : (Common.convertStringToColor(
-                              item.lightShadowcolor)),
+                      color: Theme.of(context).colorScheme.primary,
                       blurRadius: 15,
-                      spreadRadius: 3,
+                      spreadRadius: 8,
                     ),
                   ],
                 ),
@@ -452,8 +449,8 @@ class RecomendedItem extends StatelessWidget {
                           ? (Common.convertStringToColor(item.darkShadowcolor))
                           : (Common.convertStringToColor(
                               item.lightShadowcolor)),
-                      blurRadius: 10,
-                      spreadRadius: Get.theme == ThemeData.light() ? 4 : 2,
+                      blurRadius: 20,
+                      spreadRadius: 10,
                     )
                   ]),
             ),
