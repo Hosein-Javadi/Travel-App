@@ -1,4 +1,5 @@
 import 'package:aspen_explore_application/Themes/Theme/themes.dart';
+
 import 'package:aspen_explore_application/bindings/bindings.dart';
 import 'package:aspen_explore_application/data/common/common.dart';
 import 'package:aspen_explore_application/screens/auth/signup.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -21,6 +21,8 @@ void main() async {
     iosApiKey: '52DA1761-1A7E-4B09-BF31-8C3AD3D058C0',
   );
 
+  // print('object');
+  // Convert Color Format
   await GetStorage.init(CommonDataBase.boxName);
   runApp(const MyApp());
 }

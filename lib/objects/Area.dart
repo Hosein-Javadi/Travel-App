@@ -4,12 +4,16 @@ class AreaEntity {
   final int reviews;
   final String imageUrl;
   final String describtion;
+  final String lightShadowcolor;
+  final String darkShadowcolor;
   final bool liked;
   final bool wifi;
   final bool dinner;
   final bool wc;
   final bool pool;
   AreaEntity({
+    required this.lightShadowcolor,
+    required this.darkShadowcolor,
     required this.liked,
     required this.imageUrl,
     required this.title,
@@ -34,6 +38,8 @@ class AreaEntity {
         liked = json['Liked'],
         reviews = json['Reviews'],
         title = json['Title'],
+        lightShadowcolor = json['lightColor'],
+        darkShadowcolor = json['darkColor'],
         wc = json['Wc'];
 
   // static Map<String, dynamic> toMap(AreaEntity area) {

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AppThemeController extends GetxController {
-
   void changeTheme(bool isDark) {
     Get.changeTheme(getTheme(isDark));
   }

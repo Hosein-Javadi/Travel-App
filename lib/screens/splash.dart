@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Duration(seconds: 3),
       (timer) async {
         final box = GetStorage('appBox');
-        final user = await Backendless.userService.getCurrentUser(false);
+        final user = await Backendless.userService.getCurrentUser(true);
         await box.write('splashState', true);
         if (user != null) {
           Get.offNamed('/root', arguments: {'user': user});

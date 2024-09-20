@@ -49,8 +49,8 @@ class AppThemes {
           const TextTheme(
               bodyMedium: TextStyle(color: DarkThemeColors.onSurface)),
         ),
-        colorScheme: const ColorScheme.light(
-          brightness: Brightness.light,
+        colorScheme: const ColorScheme.dark(
+          brightness: Brightness.dark,
           primary: DarkThemeColors.primary,
           primaryContainer: DarkThemeColors.primaryContainer,
           onPrimary: DarkThemeColors.onPrimary,

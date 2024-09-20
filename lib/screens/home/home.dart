@@ -1,3 +1,4 @@
+import 'package:aspen_explore_application/common/common.dart';
 import 'package:aspen_explore_application/controllers/theme_controller.dart';
 import 'package:aspen_explore_application/data/common/common.dart';
 import 'package:aspen_explore_application/data/repository/main_repository.dart';
@@ -40,6 +41,9 @@ class HomeScreen extends StatelessWidget {
                     height: 32,
                   ),
                   HomeScreenRecomendedSection(),
+                  SizedBox(
+                    height: 48,
+                  )
                 ],
               ),
             ),
@@ -225,8 +229,10 @@ class PopularSlider extends StatelessWidget {
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).colorScheme.primary,
-                      // .withOpacity(0.2),
+                      color: Get.theme.colorScheme.brightness == Brightness.dark
+                          ? (Common.convertStringToColor(item.darkShadowcolor))
+                          : (Common.convertStringToColor(
+                              item.lightShadowcolor)),
                       blurRadius: 15,
                       spreadRadius: 3,
                     ),
@@ -331,13 +337,9 @@ class PopularSlider extends StatelessWidget {
 
   Positioned imageSection(String imageUrl) {
     return Positioned.fill(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(36),
-        child: Image.asset(
-            alignment: Alignment.topCenter,
-            scale: 3,
-            fit: BoxFit.fill,
-            imageUrl),
+      child: ImageWithProgress(
+        imageUrl: imageUrl,
+        scale: 3,
       ),
     );
   }
@@ -374,7 +376,7 @@ class HomeScreenRecomendedSection extends StatelessWidget {
               return recomendedSlider(state.recomendedItems);
             } else if (state is HomeError) {
               return Center(
-                child: Text('State is Not Valid'),
+                child: Text(state.exception.toString()),
               );
             } else {
               return Center(
@@ -428,72 +430,43 @@ class RecomendedItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: EdgeInsets.only(right: 24),
-        child: Stack(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Positioned.fill(
-              child: Container(
-                color: Theme.of(context).colorScheme.surface,
+            Expanded(
+              child: ImageWithProgress(
+                imageUrl: item.imageUrl,
+                scale: null,
               ),
             ),
-            Positioned.fill(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(24),
-                    child: Image.asset(
-                      item.imageUrl,
-                      fit: BoxFit.fill,
-                      width: double.infinity,
-                      height: 150,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 25, right: 25),
-                    width: double.infinity,
-                    height: 4,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withOpacity(0.4),
-                              blurRadius: 5,
-                              spreadRadius: 4)
-                        ]),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 2),
-                    child: Text(
-                      item.title,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
+            Container(
+              margin: EdgeInsets.only(left: 25, right: 25),
+              width: double.infinity,
+              height: 4,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Get.theme.colorScheme.brightness == Brightness.dark
+                          ? (Common.convertStringToColor(item.darkShadowcolor))
+                          : (Common.convertStringToColor(
+                              item.lightShadowcolor)),
+                      blurRadius: 10,
+                      spreadRadius: Get.theme == ThemeData.light() ? 4 : 2,
+                    )
+                  ]),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 2),
+              child: Text(
+                item.title,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-            // Positioned(
-            //   child: Container(
-            //     width: Get.width,
-            //     height: 4,
-            //     decoration: BoxDecoration(boxShadow: [
-            //       BoxShadow(
-            //         color: Colors.black.withOpacity(0.4),
-            //         blurRadius: 3,
-            //         spreadRadius: 0.75,
-            //       )
-            //     ]),
-            //   ),
-            //   bottom: 0,
-            //   left: 20,
-            //   right: 20,
-            // ),
           ],
         ),
       ),

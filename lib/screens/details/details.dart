@@ -1,3 +1,4 @@
+import 'package:aspen_explore_application/common/common.dart';
 import 'package:aspen_explore_application/controllers/text_controller.dart';
 import 'package:aspen_explore_application/data/sources/local_database.dart';
 import 'package:aspen_explore_application/objects/Area.dart';
@@ -278,17 +279,14 @@ class ImageSection extends StatelessWidget {
     );
   }
 
-  Padding image() {
+  Widget image() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 18),
       child: AspectRatio(
         aspectRatio: 1.12,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(26),
-          child: Image.asset(
-            data.imageUrl,
-            fit: BoxFit.fill,
-          ),
+          child: ImageWithProgress(imageUrl: data.imageUrl, scale: null),
         ),
       ),
     );
