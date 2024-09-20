@@ -265,7 +265,7 @@ class PopularSlider extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
-              width: 100,
+              width: 140,
               decoration: BoxDecoration(
                   color: Colors.grey[700],
                   borderRadius: BorderRadius.circular(8)),
@@ -288,7 +288,7 @@ class PopularSlider extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: 100,
+                  width: 140,
                   decoration: BoxDecoration(
                       color: Colors.grey[700],
                       borderRadius: BorderRadius.circular(8)),
@@ -433,6 +433,7 @@ class RecomendedItem extends StatelessWidget {
           children: [
             Expanded(
               child: ImageWithProgress(
+                width: Get.width,
                 imageUrl: item.imageUrl,
                 scale: null,
               ),
