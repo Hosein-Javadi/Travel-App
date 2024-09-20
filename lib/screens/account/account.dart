@@ -9,7 +9,6 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BackendlessUser args = Get.arguments['user'];
-    print('test');
     return Scaffold(
       body: Center(
         child: Padding(
