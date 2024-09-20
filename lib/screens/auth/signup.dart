@@ -7,16 +7,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-final TextEditingController sNameController = TextEditingController();
-final TextEditingController sEmailController = TextEditingController();
-final TextEditingController sPhoneNumberController = TextEditingController();
-final TextEditingController sPasswordController = TextEditingController();
-final TextEditingController sRePasswordController = TextEditingController();
-final TextEditingController lEmailController = TextEditingController();
-final TextEditingController lPasswordController = TextEditingController();
+TextEditingController? sNameController;
+TextEditingController? sEmailController;
+TextEditingController? sPhoneNumberController;
+TextEditingController? sPasswordController;
+TextEditingController? sRePasswordController;
+TextEditingController? lEmailController;
+TextEditingController? lPasswordController;
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
+
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
+  @override
+  void initState() {
+    sNameController = TextEditingController();
+    sEmailController = TextEditingController();
+    sPhoneNumberController = TextEditingController();
+    sPasswordController = TextEditingController();
+    sRePasswordController = TextEditingController();
+    lEmailController = TextEditingController();
+    lPasswordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    sNameController!.dispose();
+    sEmailController!.dispose();
+    sPhoneNumberController!.dispose();
+    sPasswordController!.dispose();
+    sRePasswordController!.dispose();
+    lEmailController!.dispose();
+    lPasswordController!.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -131,7 +161,7 @@ class LoginSection extends StatelessWidget {
                           height: 36,
                         ),
                         CustomTextField(
-                          controller: lEmailController,
+                          controller: lEmailController!,
                           textInputType: TextInputType.emailAddress,
                           obscureText: false,
                           label: 'Email',
@@ -139,7 +169,7 @@ class LoginSection extends StatelessWidget {
                           themeData: Theme.of(mainContext),
                         ),
                         CustomTextField(
-                          controller: lPasswordController,
+                          controller: lPasswordController!,
                           textInputType: TextInputType.text,
                           obscureText: true,
                           label: 'Password',
@@ -263,7 +293,7 @@ class AcceptButton extends StatelessWidget {
                 ),
               );
               BlocProvider.of<AuthBloc>(context).add(AuthStarted());
-              Get.toNamed('/splash');
+              Get.offNamed('/splash');
             },
           );
         }
@@ -280,30 +310,29 @@ class AcceptButton extends StatelessWidget {
         final bool state = controller.isLogin;
         if (state) {
           controller.validatelogin(
-              lEmailController.text, lPasswordController.text);
+              lEmailController!.text, lPasswordController!.text);
         } else {
           controller.validateRegister(
-              sEmailController.text,
-              sPasswordController.text,
-              sRePasswordController.text,
-              sPhoneNumberController.text,
-              sNameController.text);
+              sEmailController!.text,
+              sPasswordController!.text,
+              sRePasswordController!.text,
+              sPhoneNumberController!.text,
+              sNameController!.text);
         }
         if (state && !controller.loginHasError) {
           BlocProvider.of<AuthBloc>(context).add(
             AuthLogin(
-              email: lEmailController.text,
-              password: lPasswordController.text,
-
+              email: lEmailController!.text,
+              password: lPasswordController!.text,
             ),
           );
         } else if (!state && !controller.signUpHasError) {
           BlocProvider.of<AuthBloc>(context).add(
             AuthRegister(
-              name: sNameController.text,
-              email: sEmailController.text,
-              phoneNumber: sPhoneNumberController.text,
-              password: sPasswordController.text,
+              name: sNameController!.text,
+              email: sEmailController!.text,
+              phoneNumber: sPhoneNumberController!.text,
+              password: sPasswordController!.text,
             ),
           );
         }
@@ -379,7 +408,7 @@ class SingUpSection extends StatelessWidget {
                       height: 36,
                     ),
                     CustomTextField(
-                      controller: sNameController,
+                      controller: sNameController!,
                       textInputType: TextInputType.text,
                       obscureText: false,
                       label: 'Name',
@@ -387,7 +416,7 @@ class SingUpSection extends StatelessWidget {
                       themeData: Theme.of(mainContext),
                     ),
                     CustomTextField(
-                      controller: sEmailController,
+                      controller: sEmailController!,
                       textInputType: TextInputType.emailAddress,
                       obscureText: false,
                       label: 'Email',
@@ -395,7 +424,7 @@ class SingUpSection extends StatelessWidget {
                       themeData: Theme.of(mainContext),
                     ),
                     CustomTextField(
-                      controller: sPhoneNumberController,
+                      controller: sPhoneNumberController!,
                       textInputType: TextInputType.phone,
                       obscureText: false,
                       label: 'Phone Number',
@@ -403,7 +432,7 @@ class SingUpSection extends StatelessWidget {
                       themeData: Theme.of(mainContext),
                     ),
                     CustomTextField(
-                      controller: sPasswordController,
+                      controller: sPasswordController!,
                       textInputType: TextInputType.text,
                       obscureText: true,
                       label: 'Password',
@@ -411,7 +440,7 @@ class SingUpSection extends StatelessWidget {
                       themeData: Theme.of(mainContext),
                     ),
                     CustomTextField(
-                      controller: sRePasswordController,
+                      controller: sRePasswordController!,
                       textInputType: TextInputType.text,
                       obscureText: true,
                       label: 'Re Password',
