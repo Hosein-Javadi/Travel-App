@@ -44,6 +44,7 @@ dependencies:
   flutter_bloc: ^8.1.6
   backendless_sdk: ^8.0.0-alpha.28
   email_validator: ^3.0.0
+  pull_to_refresh_flutter3: ^2.0.2
 
 
 dev_dependencies:

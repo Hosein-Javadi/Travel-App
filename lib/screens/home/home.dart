@@ -1,8 +1,6 @@
 import 'package:aspen_explore_application/common/common.dart';
+import 'package:aspen_explore_application/controllers/home/home_controller.dart';
 import 'package:aspen_explore_application/controllers/theme_controller.dart';
-import 'package:aspen_explore_application/data/common/common.dart';
-import 'package:aspen_explore_application/data/repository/main_repository.dart';
-import 'package:aspen_explore_application/data/sources/remote_source.dart';
 import 'package:aspen_explore_application/objects/Area.dart';
 import 'package:aspen_explore_application/screens/home/bloc/home_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -10,41 +8,52 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HomeBloc>(
-      create: (context) {
-        final bloc = HomeBloc(AppRepository(
-            source: RemoteDataSource(dio: CommonDataBase.appDio)));
-        bloc.add(HomeStarted());
-        return bloc;
-      },
-      child: Scaffold(
-        body: SingleChildScrollView(
+    final RefreshController _refreshController = RefreshController();
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.only(top: 46),
+        child: SmartRefresher(
           physics: BouncingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, top: 46),
-              child: Column(
-                children: [
-                  HomeScreenAppbar(),
-                  SizedBox(
-                    height: 36,
-                  ),
-                  HomeScreenPopularSection(),
-                  SizedBox(
-                    height: 32,
-                  ),
-                  HomeScreenRecomendedSection(),
-                  SizedBox(
-                    height: 48,
-                  )
-                ],
+          header: ClassicHeader(
+            idleText: 'Pull Down To Refresh',
+            textStyle: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          onRefresh: () {
+           Get.find<HomeController>().addEvent(HomeRefresh());
+            imageCache.clear();
+            _refreshController.refreshCompleted();
+          },
+          controller: _refreshController,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 24, right: 24),
+                child: Column(
+                  children: [
+                    HomeScreenAppbar(),
+                    SizedBox(
+                      height: 36,
+                    ),
+                    HomeScreenPopularSection(),
+                    SizedBox(
+                      height: 32,
+                    ),
+                    HomeScreenRecomendedSection(),
+                    SizedBox(
+                      height: 48,
+                    )
+                  ],
+                ),
               ),
             ),
           ),

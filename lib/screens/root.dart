@@ -1,9 +1,12 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:aspen_explore_application/controllers/home/home_controller.dart';
 import 'package:aspen_explore_application/controllers/navigation_controller.dart';
 import 'package:aspen_explore_application/screens/account/account.dart';
 import 'package:aspen_explore_application/screens/details/details.dart';
+import 'package:aspen_explore_application/screens/home/bloc/home_bloc.dart';
 import 'package:aspen_explore_application/screens/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class RootScreen extends StatelessWidget {
@@ -49,8 +52,18 @@ class RootScreen extends StatelessWidget {
           id: 'Bottom_Navigation',
           builder: (controller) => IndexedStack(
             children: [
-              HomeScreen(
-                key: controller.screenKeys[0],
+              MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) {
+                      Get.find<HomeController>().addEvent(HomeStarted());
+                      return Get.find<HomeController>().bloc;
+                    },
+                  ),
+                ],
+                child: HomeScreen(
+                  key: controller.screenKeys[0],
+                ),
               ),
               DetailsScreen(
                 key: controller.screenKeys[1],

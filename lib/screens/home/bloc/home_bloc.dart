@@ -13,7 +13,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeEvent>((event, emit) async {
       try {
         emit(HomeLoading());
-        if (event is HomeStarted || event is HomeLoading) {
+        if (event is HomeStarted ||
+            // event is HomeLoading ||
+            event is HomeRefresh) {
           final recdata = await repository.getAll(AreaSort.recomendedSort);
           final popdata = await repository.getAll(AreaSort.defaultSort);
           emit(HomeSuccess(recdata, popdata));
