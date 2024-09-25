@@ -16,9 +16,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (event is HomeStarted ||
             // event is HomeLoading ||
             event is HomeRefresh) {
-          final recdata = await repository.getAll(AreaSort.recomendedSort);
-          final popdata = await repository.getAll(AreaSort.defaultSort);
-          emit(HomeSuccess(recdata, popdata));
+          if (event is HomeStarted) {
+            final recdata = await repository.getAll(
+                AreaSort.recomendedSort, (event).isEnglish);
+            final popdata =
+                await repository.getAll(AreaSort.defaultSort, event.isEnglish);
+            emit(HomeSuccess(recdata, popdata));
+          } else if(event is HomeRefresh){
+            final recdata = await repository.getAll(
+                AreaSort.recomendedSort, event.isEnglish);
+            final popdata =
+                await repository.getAll(AreaSort.defaultSort, event.isEnglish);
+            emit(HomeSuccess(recdata, popdata));
+          }
         }
       } catch (e) {
         if (e is DioException) {

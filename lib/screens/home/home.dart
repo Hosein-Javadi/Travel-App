@@ -1,6 +1,9 @@
 import 'package:aspen_explore_application/common/common.dart';
 import 'package:aspen_explore_application/controllers/home/home_controller.dart';
-import 'package:aspen_explore_application/controllers/theme_controller.dart';
+import 'package:aspen_explore_application/controllers/Theme/theme_controller.dart';
+import 'package:aspen_explore_application/controllers/translate/translate_controller.dart';
+import 'package:aspen_explore_application/data/common/common.dart';
+import 'package:aspen_explore_application/data/sources/local_database.dart';
 import 'package:aspen_explore_application/objects/Area.dart';
 import 'package:aspen_explore_application/screens/home/bloc/home_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -8,6 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,20 +22,14 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final RefreshController _refreshController = RefreshController();
     return Scaffold(
+      drawer: HomeDrawer(),
       body: Padding(
         padding: const EdgeInsets.only(top: 46),
         child: SmartRefresher(
           physics: BouncingScrollPhysics(),
-          header: ClassicHeader(
-            idleText: 'Pull Down To Refresh',
-            textStyle: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
+          header: PullRefreshHeader(),
           onRefresh: () {
-           Get.find<HomeController>().addEvent(HomeRefresh());
-            imageCache.clear();
-            _refreshController.refreshCompleted();
+            refreshScreen(_refreshController);
           },
           controller: _refreshController,
           child: SingleChildScrollView(
@@ -61,6 +60,154 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+  void refreshScreen(RefreshController refreshController) {
+    Get.find<HomeController>().addEvent(
+        HomeRefresh(isEnglish: Get.find<TranslateController>().isEnglish));
+    imageCache.clear();
+    refreshController.refreshCompleted();
+  }
+}
+
+class PullRefreshHeader extends StatelessWidget {
+  const PullRefreshHeader({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClassicHeader(
+      spacing: 4,
+      idleText: 'Pull Down To Refresh'.tr,
+      releaseText: 'Release To Refesh'.tr,
+      completeText: 'Refresh Completed'.tr,
+      textStyle: TextStyle(
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
+    );
+  }
+}
+
+class HomeDrawer extends StatelessWidget {
+  const HomeDrawer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Wrap(
+        alignment: WrapAlignment.start,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          header(context),
+          translateSection(),
+        ],
+      ),
+    );
+  }
+
+  Widget translateSection() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 26, top: 16, right: 26),
+      child: SizedBox(
+        width: 135,
+        child: PopupMenuButton(
+          menuPadding: EdgeInsets.only(left: 12, right: 12),
+          position: PopupMenuPosition.under,
+          popUpAnimationStyle: AnimationStyle(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.slowMiddle,
+            reverseCurve: Curves.slowMiddle,
+            reverseDuration: Duration(milliseconds: 650),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.translate),
+              SizedBox(
+                width: 4,
+              ),
+              Text('Language'),
+              Icon(Icons.keyboard_arrow_down_outlined),
+            ],
+          ),
+          itemBuilder: (context) {
+            return [
+              PopupMenuItem(
+                onTap: () async {
+                  if (!Get.find<TranslateController>().isEnglish) {
+                    final storage = await GetStorage(CommonDataBase.boxName);
+                    await storage.write(CommonDataBase.localeBoxName, 'en');
+                    BlocProvider.of<HomeBloc>(context).add(
+                      HomeRefresh(isEnglish: true),
+                    );
+                    Get.find<TranslateController>().changeTrasnlate();
+                    Get.back();
+                    Scaffold.of(context).closeDrawer();
+                    Common.showMenuSnakBarInfo(context);
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
+                  child: Text(
+                    'English',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface),
+                  ),
+                ),
+              ),
+              PopupMenuItem(
+                onTap: () async {
+                  if (Get.find<TranslateController>().isEnglish) {
+                    final storage = await GetStorage(CommonDataBase.boxName);
+                    await storage.write(CommonDataBase.localeBoxName, 'fa');
+                    BlocProvider.of<HomeBloc>(context).add(
+                      HomeRefresh(isEnglish: false),
+                    );
+                    Get.find<TranslateController>().changeTrasnlate();
+                    Get.back();
+                    Scaffold.of(context).closeDrawer();
+                    Common.showMenuSnakBarInfo(context);
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
+                  child: Text(
+                    'Persian',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface),
+                  ),
+                ),
+              ),
+            ];
+          },
+        ),
+      ),
+    );
+  }
+
+  DrawerHeader header(BuildContext context) {
+    return DrawerHeader(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Travel App',
+              style: GoogleFonts.protestGuerrilla(
+                fontWeight: FontWeight.bold,
+                fontSize: 26,
+                letterSpacing: 6,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class HomeScreenAppbar extends StatelessWidget {
@@ -78,19 +225,26 @@ class HomeScreenAppbar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Explore',
+              'Explore'.tr,
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(
               height: 2,
             ),
             Text(
-              'Iran',
+              'Iran'.tr,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ],
         ),
-        AppbarChangeThemeSection()
+        Row(
+          children: [
+            AppbarChangeThemeSection(),
+            SizedBox(
+              width: 16,
+            ),
+          ],
+        )
       ],
     );
   }
@@ -116,7 +270,7 @@ class AppbarChangeThemeSection extends StatelessWidget {
           SizedBox(
             width: 4,
           ),
-          Text('Theme'),
+          Text('Theme'.tr),
           SizedBox(
             width: 4,
           ),
@@ -135,7 +289,7 @@ class AppbarChangeThemeSection extends StatelessWidget {
                 Icons.light_mode_outlined,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              title: Text('Dark Theme'),
+              title: Text('Dark Theme'.tr),
             ),
           ),
           PopupMenuItem(
@@ -148,7 +302,7 @@ class AppbarChangeThemeSection extends StatelessWidget {
                 Icons.dark_mode_outlined,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              title: Text('Light Theme'),
+              title: Text('Light Theme'.tr),
             ),
           ),
         ];
@@ -167,7 +321,7 @@ class HomeScreenPopularSection extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Popular',
+              'Popular'.tr,
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -268,7 +422,7 @@ class PopularSlider extends StatelessWidget {
   Positioned detailsSection(AreaEntity item, BuildContext context) {
     return Positioned.fill(
       child: Padding(
-        padding: const EdgeInsets.only(left: 24, bottom: 18),
+        padding: const EdgeInsets.only(left: 24, bottom: 18, right: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -282,10 +436,13 @@ class PopularSlider extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    item.title,
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 3, bottom: 3),
+                    child: Text(
+                      item.title,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
@@ -294,13 +451,15 @@ class PopularSlider extends StatelessWidget {
               height: 8,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
+                  height: 40,
                   width: 140,
                   decoration: BoxDecoration(
                       color: Colors.grey[700],
-                      borderRadius: BorderRadius.circular(8)),
+                      borderRadius: BorderRadius.circular(16)),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -323,14 +482,17 @@ class PopularSlider extends StatelessWidget {
                   ),
                 ),
                 if (item.liked)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 18),
-                    child: CircleAvatar(
-                      child: Icon(
-                        CupertinoIcons.heart_fill,
-                        color: Colors.red,
-                      ),
-                      backgroundColor: Theme.of(context).colorScheme.surface,
+                  Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(left: 18, right: 18),
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Theme.of(context).colorScheme.surface),
+                    child: Icon(
+                      CupertinoIcons.heart_fill,
+                      color: Colors.red,
                     ),
                   ),
               ],
@@ -361,7 +523,7 @@ class HomeScreenRecomendedSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              'Recommended',
+              'Recommended'.tr,
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -468,7 +630,7 @@ class RecomendedItem extends StatelessWidget {
               height: 8,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 2),
+              padding: const EdgeInsets.only(left: 2, right: 2),
               child: Text(
                 item.title,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

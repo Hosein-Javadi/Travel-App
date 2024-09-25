@@ -1,5 +1,6 @@
 import 'package:aspen_explore_application/common/common.dart';
-import 'package:aspen_explore_application/controllers/text_controller.dart';
+import 'package:aspen_explore_application/controllers/Text/text_controller.dart';
+import 'package:aspen_explore_application/controllers/translate/translate_controller.dart';
 import 'package:aspen_explore_application/data/sources/local_database.dart';
 import 'package:aspen_explore_application/objects/Area.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,9 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AreaEntity data =
-        Get.arguments['item'] ?? LocalAppDataBase.ifnullItem;
+        Get.arguments != null && Get.arguments['item'] != null
+            ? Get.arguments['item']
+            : LocalAppDataBase.ifnullItem;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -64,20 +67,20 @@ class OptionsSection extends StatelessWidget {
             return optionItem(
               context,
               Icons.wifi,
-              'Wifi',
+              'Wifi'.tr,
               item.wifi,
             );
           case 1:
             return optionItem(
               context,
               Icons.local_dining_rounded,
-              'Dinner',
+              'Dinner'.tr,
               item.dinner,
             );
           case 2:
-            return optionItem(context, Icons.wc, 'WC', item.wc);
+            return optionItem(context, Icons.wc, 'WC'.tr, item.wc);
           case 3:
-            return optionItem(context, Icons.pool, 'Pool', item.pool);
+            return optionItem(context, Icons.pool, 'Pool'.tr, item.pool);
           default:
             return SizedBox();
         }
@@ -157,7 +160,14 @@ class DescribtionSection extends StatelessWidget {
             SizedBox(
               width: 4,
             ),
-            Text('${data.likes} (${data.reviews} Reviews)'),
+            // Text('${data.likes} (${data.reviews} Reviews)'),
+
+            Text.rich(
+              TextSpan(text: '${data.likes} (${data.reviews} ', children: [
+                TextSpan(text: 'Reviews'.tr),
+                TextSpan(text: ')'),
+              ]),
+            ),
           ],
         ),
         SizedBox(
@@ -179,15 +189,15 @@ class DescribtionSection extends StatelessWidget {
     );
   }
 
-  Text textSection(AppTextController controller) {
+  Widget textSection(AppTextController controller) {
     return Text(
       data.describtion,
       style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 14,
+        fontWeight: FontWeight.w900,
+        fontSize: Get.find<TranslateController>().isEnglish ? 14 : 16,
       ),
-      textAlign: TextAlign.left,
-      maxLines: controller.detailsisElpises ? 3 : 8,
+      textAlign: TextAlign.justify,
+      maxLines: controller.detailsisElpises ? 3 : 13,
       overflow: controller.detailsisElpises
           ? TextOverflow.ellipsis
           : TextOverflow.visible,
@@ -200,7 +210,7 @@ class DescribtionSection extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            controller.detailsisElpises ? 'Read More' : 'See Less',
+            controller.detailsisElpises ? 'Read More'.tr : 'See Less'.tr,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           SizedBox(
@@ -230,7 +240,8 @@ class ImageSection extends StatelessWidget {
     return Stack(
       children: [
         image(),
-        if (Get.arguments['item'] != null) backIcon(context),
+        if (Get.arguments != null && Get.arguments['item'] != null)
+          backIcon(context),
         heartIcon(context),
       ],
     );
@@ -266,7 +277,9 @@ class ImageSection extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Icon(
-                Icons.arrow_back_ios_new,
+                Get.locale == Locale.fromSubtags(languageCode: 'en')
+                    ? Icons.arrow_back_ios_new
+                    : Icons.arrow_forward_ios_rounded,
                 size: 24,
                 color: Colors.black.withOpacity(0.4),
               ),

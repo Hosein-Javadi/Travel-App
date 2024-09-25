@@ -1,4 +1,5 @@
 import 'package:aspen_explore_application/controllers/auth/auth_controller.dart';
+import 'package:aspen_explore_application/data/sources/local_database.dart';
 import 'package:aspen_explore_application/screens/splash.dart';
 import 'package:backendless_sdk/backendless_sdk.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,10 @@ class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    final BackendlessUser args = Get.arguments['user'];
+    final BackendlessUser args =
+        Get.arguments != null && Get.arguments['user'] != null
+            ? Get.arguments['user']
+            : LocalAppDataBase.ifNullUser;
     return Scaffold(
       body: Center(
         child: Padding(
@@ -39,14 +43,14 @@ class AccountScreen extends StatelessWidget {
                 height: 45,
               ),
               AccountItem(
-                title: 'Phone :',
+                title: 'Phone :'.tr,
                 caption: args.properties['phone'],
               ),
               SizedBox(
                 height: 25,
               ),
               AccountItem(
-                title: 'Email :',
+                title: 'Email :'.tr,
                 caption: args.properties['email'],
               ),
               SizedBox(
@@ -60,19 +64,19 @@ class AccountScreen extends StatelessWidget {
                 ),
                 ontap: () {
                   Get.defaultDialog(
-                    title: 'Warning',
+                    title: 'Warning'.tr,
                     titleStyle: TextStyle(color: Colors.orange),
-                    middleText: 'Are You Sure Want To logout?',
+                    middleText: 'Are You Sure Want To logout?'.tr,
                     middleTextStyle: TextStyle(color: Colors.red),
-                    textCancel: 'Cancell',
+                    textCancel: 'Cancell'.tr,
                     cancel: button(
                       Colors.green,
-                      'Cancell',
+                      'Cancell'.tr,
                       () => Get.back(),
                     ),
                     confirm: button(
                       Colors.red,
-                      'Logout',
+                      'Logout'.tr,
                       () {
                         Get.find<AuthController>().signOut();
                         Get.offAllNamed('/auth');
@@ -84,7 +88,7 @@ class AccountScreen extends StatelessWidget {
                   padding: EdgeInsets.only(top: 6, bottom: 6),
                   child: Center(
                     child: Text(
-                      'Logout',
+                      'Logout'.tr,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,
@@ -130,7 +134,8 @@ class AccountItem extends StatelessWidget {
           color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
           borderRadius: BorderRadius.circular(25)),
       child: Padding(
-        padding: const EdgeInsets.only(left: 18, bottom: 16, top: 16),
+        padding:
+            const EdgeInsets.only(left: 18, bottom: 16, top: 16, right: 18),
         child: Column(
           children: [
             Row(

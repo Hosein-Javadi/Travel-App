@@ -1,6 +1,8 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:aspen_explore_application/common/common.dart';
 import 'package:aspen_explore_application/controllers/home/home_controller.dart';
-import 'package:aspen_explore_application/controllers/navigation_controller.dart';
+import 'package:aspen_explore_application/controllers/navigation/navigation_controller.dart';
+import 'package:aspen_explore_application/controllers/translate/translate_controller.dart';
 import 'package:aspen_explore_application/screens/account/account.dart';
 import 'package:aspen_explore_application/screens/details/details.dart';
 import 'package:aspen_explore_application/screens/home/bloc/home_bloc.dart';
@@ -9,8 +11,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-class RootScreen extends StatelessWidget {
+class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
+
+  @override
+  State<RootScreen> createState() => _RootScreenState();
+}
+
+class _RootScreenState extends State<RootScreen> {
+  @override
+  void initState() {
+    Common.showMenuSnakBarInfo(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +69,9 @@ class RootScreen extends StatelessWidget {
                 providers: [
                   BlocProvider(
                     create: (context) {
-                      Get.find<HomeController>().addEvent(HomeStarted());
+                      Get.find<HomeController>().addEvent(HomeStarted(
+                          isEnglish:
+                              Get.find<TranslateController>().isEnglish));
                       return Get.find<HomeController>().bloc;
                     },
                   ),

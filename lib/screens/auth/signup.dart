@@ -4,6 +4,7 @@ import 'package:aspen_explore_application/screens/auth/repo/repository.dart';
 import 'package:aspen_explore_application/screens/auth/source/source.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
@@ -151,7 +152,7 @@ class LoginSection extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Login',
+                              'Login'.tr,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 36),
                             ),
@@ -164,17 +165,19 @@ class LoginSection extends StatelessWidget {
                           controller: lEmailController!,
                           textInputType: TextInputType.emailAddress,
                           obscureText: false,
-                          label: 'Email',
+                          label: 'Email'.tr,
                           iconData: Icons.email_outlined,
                           themeData: Theme.of(mainContext),
+                          inputFormatter: [],
                         ),
                         CustomTextField(
                           controller: lPasswordController!,
                           textInputType: TextInputType.text,
                           obscureText: true,
-                          label: 'Password',
+                          label: 'Password'.tr,
                           iconData: Icons.lock_outline_sharp,
                           themeData: Theme.of(mainContext),
+                          inputFormatter: [],
                         ),
                         SizedBox(
                           height: 36,
@@ -198,7 +201,7 @@ class LoginSection extends StatelessWidget {
                           width: Get.width,
                           height: 65,
                           child: AcceptButton(
-                            child: Text('Login'),
+                            child: Text('Login'.tr),
                           ),
                         ),
                         SizedBox(
@@ -208,7 +211,7 @@ class LoginSection extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             BottomText(
-                              text: 'Don\'t Have Any Account? Sign Up',
+                              text: 'Don\'t Have Any Account? Sign Up'.tr,
                             ),
                           ],
                         ),
@@ -249,6 +252,7 @@ class AcceptButton extends StatelessWidget {
           );
         } else if (state is AuthError) {
           WidgetsBinding.instance.addPostFrameCallback(
+            debugLabel: 'Dialoged',
             (_) async {
               await Get.defaultDialog(
                 title: 'Error',
@@ -275,8 +279,8 @@ class AcceptButton extends StatelessWidget {
           WidgetsBinding.instance.addPostFrameCallback(
             (_) async {
               await Get.defaultDialog(
-                title: 'Success',
-                middleText: 'Welcome!',
+                title: 'Success'.tr,
+                middleText: 'Welcome!'.tr,
                 confirm: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(
@@ -286,7 +290,7 @@ class AcceptButton extends StatelessWidget {
                     Get.back();
                   },
                   child: Text(
-                    'Ok',
+                    'Ok'.tr,
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface),
                   ),
@@ -398,7 +402,7 @@ class SingUpSection extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Sign Up',
+                          'Sign Up'.tr,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 36),
                         ),
@@ -408,34 +412,41 @@ class SingUpSection extends StatelessWidget {
                       height: 36,
                     ),
                     CustomTextField(
+                      inputFormatter: [],
                       controller: sNameController!,
                       textInputType: TextInputType.text,
                       obscureText: false,
-                      label: 'Name',
+                      label: 'Name'.tr,
                       iconData: Icons.account_circle_outlined,
                       themeData: Theme.of(mainContext),
                     ),
                     CustomTextField(
+                      inputFormatter: [],
                       controller: sEmailController!,
                       textInputType: TextInputType.emailAddress,
                       obscureText: false,
-                      label: 'Email',
+                      label: 'Email'.tr,
                       iconData: Icons.email_outlined,
                       themeData: Theme.of(mainContext),
                     ),
                     CustomTextField(
+                      inputFormatter: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                      ],
+                      enableInteractiveSelection: true,
                       controller: sPhoneNumberController!,
                       textInputType: TextInputType.phone,
                       obscureText: false,
-                      label: 'Phone Number',
+                      label: 'Phone Number'.tr,
                       iconData: Icons.phone,
                       themeData: Theme.of(mainContext),
                     ),
                     CustomTextField(
+                      inputFormatter: [],
                       controller: sPasswordController!,
                       textInputType: TextInputType.text,
                       obscureText: true,
-                      label: 'Password',
+                      label: 'Password'.tr,
                       iconData: Icons.lock_outline_sharp,
                       themeData: Theme.of(mainContext),
                     ),
@@ -443,9 +454,10 @@ class SingUpSection extends StatelessWidget {
                       controller: sRePasswordController!,
                       textInputType: TextInputType.text,
                       obscureText: true,
-                      label: 'Re Password',
+                      label: 'Re Password'.tr,
                       iconData: Icons.lock_outline_rounded,
                       themeData: Theme.of(mainContext),
+                      inputFormatter: [],
                     ),
                     SizedBox(
                       height: 24,
@@ -466,14 +478,14 @@ class SingUpSection extends StatelessWidget {
                       width: Get.width,
                       height: 65,
                       child: AcceptButton(
-                        child: Text('Register'),
+                        child: Text('Register'.tr),
                       ),
                     ),
                     SizedBox(
                       height: 36,
                     ),
                     BottomText(
-                      text: 'Have a Account? Login',
+                      text: 'Have a Account? Login'.tr,
                     ),
                     SizedBox(
                       height: 36,
@@ -519,17 +531,22 @@ class CustomTextField extends StatelessWidget {
     required this.obscureText,
     required this.textInputType,
     required this.controller,
+    required this.inputFormatter,
+    this.enableInteractiveSelection,
   });
-
   final String label;
   final IconData iconData;
   final ThemeData themeData;
   final bool obscureText;
   final TextInputType textInputType;
   final TextEditingController controller;
+  final List<TextInputFormatter>? inputFormatter;
+  final bool? enableInteractiveSelection;
   @override
   Widget build(BuildContext context) {
     return TextField(
+      enableInteractiveSelection: enableInteractiveSelection,
+      inputFormatters: inputFormatter,
       controller: controller,
       obscureText: obscureText,
       keyboardType: textInputType,

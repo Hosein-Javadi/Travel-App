@@ -1,11 +1,11 @@
 import 'package:aspen_explore_application/Themes/Theme/themes.dart';
-
-import 'package:aspen_explore_application/bindings/bindings.dart';
+import 'package:aspen_explore_application/Translate/translate.dart';
+import 'package:aspen_explore_application/bin/bindings.dart';
 import 'package:aspen_explore_application/data/common/common.dart';
 import 'package:aspen_explore_application/screens/auth/signup.dart';
 import 'package:aspen_explore_application/screens/details/details.dart';
 import 'package:aspen_explore_application/screens/home/home.dart';
-import 'package:aspen_explore_application/screens/root.dart';
+import 'package:aspen_explore_application/screens/root/root.dart';
 import 'package:aspen_explore_application/screens/splash.dart';
 import 'package:backendless_sdk/backendless_sdk.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +21,6 @@ void main() async {
     iosApiKey: '52DA1761-1A7E-4B09-BF31-8C3AD3D058C0',
   );
 
-  // print('object');
-  // Convert Color Format
   await GetStorage.init(CommonDataBase.boxName);
   runApp(const MyApp());
 }
@@ -34,13 +32,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     final bool? viwedSplash = GetStorage('appBox').read('splashState');
+    final String? localeStatte =
+        GetStorage(CommonDataBase.boxName).read(CommonDataBase.localeBoxName);
     return GetMaterialApp(
+      locale: localeStatte != null && localeStatte == 'en'
+          ? Locale('en')
+          : localeStatte != null && localeStatte == 'fa'
+              ? Locale('fa')
+              : Locale('en'),
+      translations: AppTranslator(),
       initialBinding: AppBindings(),
+      theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
+      themeMode: ThemeMode.system,
       title: 'Flutter Demo',
-      themeMode: Get.theme.brightness == Brightness.dark
-          ? ThemeMode.dark
-          : ThemeMode.light,
-      theme: AppThemes.darkTheme,
       getPages: [
         GetPage(
           name: '/root',

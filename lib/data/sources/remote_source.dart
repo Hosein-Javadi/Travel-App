@@ -8,20 +8,20 @@ class RemoteDataSource implements AppSources {
 
   RemoteDataSource({required this.dio});
   @override
-  Future<List<AreaEntity>> getAll(AreaSort sortType) async {
+  Future<List<AreaEntity>> getAll(AreaSort sortType,bool isEnglish) async {
     final localDatas = LocalAppDataBase();
     String urL = sortType == AreaSort.defaultSort
         ? '/data/Tourist%20Areas?sortBy=%60priority%60%20desc'
         : 'data/Tourist%20Areas?sortBy=%60likes%60%20desc';
     final Response = await dio.get(urL);
-    if (Response.statusCode == 200) {
+    if (Response.statusCode == 200 && Response.data != null) {
       final List<AreaEntity> items = [];
       (Response.data as List).forEach(
-        (element) => items.add(AreaEntity.fromJson(element)),
+        (element) => items.add(AreaEntity.fromJson(element, isEnglish: isEnglish)),
       );
       return items;
     } else {
-      return localDatas.getAll(sortType);
+      return localDatas.getAll(sortType,isEnglish);
     }
   }
 }

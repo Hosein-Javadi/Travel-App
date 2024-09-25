@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 class CommonDataBase {
   static const String boxName = 'appBox';
-  // static const String authBoxName = 'authUser';
+  static const String localeBoxName = 'appBox';
 
   static final Dio appDio = Dio(
     BaseOptions(

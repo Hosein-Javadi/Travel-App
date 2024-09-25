@@ -44,7 +44,14 @@ class _SplashScreenState extends State<SplashScreen> {
     final themeData = Theme.of(context);
     return Theme(
       data: ThemeData(
-          textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.white))),
+        textTheme: TextTheme(
+          bodyMedium: TextStyle(
+              color: Colors.white,
+              fontFamily: Get.locale == Locale.fromSubtags(languageCode: 'fa')
+                  ? 'Graphic'
+                  : 'lato'),
+        ),
+      ),
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -60,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               Center(
                 child: Text(
-                  'Iran',
+                  'Iran'.tr,
                   style: TextStyle(fontSize: 160),
                 ),
               ),
@@ -71,13 +78,13 @@ class _SplashScreenState extends State<SplashScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'See',
+                      'See'.tr,
                       style: TextStyle(
                         fontSize: 32,
                       ),
                     ),
                     Text(
-                      'Tourism Areas',
+                      'Tourism Areas'.tr,
                       style:
                           TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
                     ),
@@ -91,9 +98,8 @@ class _SplashScreenState extends State<SplashScreen> {
                             await Backendless.userService.getCurrentUser(true);
                         await box.write('splashState', true);
                         if (user != null) {
-                          Get.offNamed('/root', arguments: {
-                            'user': user,
-                          });
+                          timer?.cancel();
+                          Get.offNamed('/root', arguments: {'user': user});
                         } else {
                           Get.offNamed('/auth');
                         }
@@ -103,7 +109,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         padding: const EdgeInsets.all(12),
                         child: Center(
                           child: Text(
-                            'Explore',
+                            'splashExplore'.tr,
                             style: TextStyle(fontSize: 18),
                           ),
                         ),

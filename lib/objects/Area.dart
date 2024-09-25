@@ -1,4 +1,5 @@
 class AreaEntity {
+  final bool isEnglish;
   final String title;
   final double likes;
   final int reviews;
@@ -12,6 +13,7 @@ class AreaEntity {
   final bool wc;
   final bool pool;
   AreaEntity({
+    this.isEnglish = true,
     required this.lightShadowcolor,
     required this.darkShadowcolor,
     required this.liked,
@@ -26,8 +28,8 @@ class AreaEntity {
     required this.reviews,
   });
 
-  AreaEntity.fromJson(Map<String, dynamic> json)
-      : describtion = json['Describtion'],
+  AreaEntity.fromJson(Map<String, dynamic> json, {this.isEnglish = true})
+      : describtion = isEnglish ? json['Describtion'] : json['fa_describtion'],
         dinner = json['Dinner'],
         imageUrl = json['imageUrl'],
         likes = json['likes'] is int
@@ -37,7 +39,7 @@ class AreaEntity {
         pool = json['Pool'],
         liked = json['Liked'],
         reviews = json['Reviews'],
-        title = json['Title'],
+        title = isEnglish ? json['Title'] : json['fa_title'],
         lightShadowcolor = json['lightColor'],
         darkShadowcolor = json['darkColor'],
         wc = json['Wc'];

@@ -1,3 +1,4 @@
+import 'package:aspen_explore_application/controllers/translate/translate_controller.dart';
 import 'package:backendless_sdk/backendless_sdk.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:get/get.dart';
@@ -18,16 +19,18 @@ class AuthController extends GetxController {
     update(['authState']);
   }
 
-
   void validatelogin(String email, String password) {
+    final bool isEnglish = Get.find<TranslateController>().isEnglish;
     String error = '';
     if (email.isEmpty) {
-      error += 'Email Was Null!\n';
+      error += isEnglish ? 'Email Was Null!\n' : 'ایمیل خالی است\n';
     } else if (!EmailValidator.validate(email)) {
-      error += 'Email Statement is Not Defind!\n';
+      error += isEnglish
+          ? 'Email Statement is Not Defind!\n'
+          : 'قالب ایمیل صحیح نیست\n';
     }
     if (password.isEmpty) {
-      error += 'Password Was Null!';
+      error += isEnglish ? 'Password Was Null!\n' : 'رمز عبور خالی است\n';
     }
 
     if (error.isNotEmpty) {
@@ -43,28 +46,32 @@ class AuthController extends GetxController {
 
   void validateRegister(String email, String password, String rePassword,
       String phoneNumber, String name) {
+    final bool isEnglish = Get.find<TranslateController>().isEnglish;
     String error = '';
     if (email.isEmpty) {
-      error += 'Email Was Null\n';
+      error += isEnglish ? 'Email Was Null\n' : 'ایمیل خالی است\n';
     } else if (!EmailValidator.validate(email, true)) {
-      error += 'Email Statement is Not Defind!\n';
+      error += isEnglish
+          ? 'Email Statement is Not Defind!\n'
+          : 'قالب ایمیل صحیح نیست\n';
     } else if (!(allowedEmailDomainms
         .contains(email.substring(email.lastIndexOf('@') + 1)))) {
-      error +=
-          'This Domain. Not Allowed!,\n    Allowe Domains : ${allowedEmailDomainms} \n';
+      error += isEnglish
+          ? 'This Domain. Not Allowed!,\n    Allowe Domains : ${allowedEmailDomainms} \n'
+          : 'این دامنه برای ثبت نام صحیح نیست،\n قرمت های صحیح : $allowedEmailDomainms \n';
     }
     if (phoneNumber.length < 10) {
-      error += 'The phone number must be at least 10 digits!\n';
+      error += isEnglish ? 'The phone number must be at least 10 digits!\n' : 'شماره تلفن باید بیشتر از 10 رقم باشد\n';
     } else if (phoneNumber.length > 15) {
-      error += 'The phone number must be less than 15 digits\n';
+      error += isEnglish ? 'The phone number must be less than 15 digits\n' : 'شماره تلفن باید کمتر از 15 رقم باشد\n' ;
     }
     if (password.isEmpty) {
-      error += 'Password Was Null\n';
+      error += isEnglish ? 'Password Was Null\n' : 'رمز عبور خالی است \n';
     } else if (password != rePassword) {
-      error += 'Passwords Not Math!\n';
+      error += isEnglish ? 'Passwords Not Math!\n' : 'تکرار رمز عوبر صحیح نیست \n';
     }
     if (name.isEmpty) {
-      error += 'Name Was Null\n';
+      error += isEnglish ? 'Name Was Null\n' : 'نام خالی است\n';
     }
     if (error.isNotEmpty) {
       registerErrorMessage = error;

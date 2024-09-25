@@ -1,6 +1,7 @@
 import 'package:aspen_explore_application/Themes/dark_theme_colors.dart';
 import 'package:aspen_explore_application/Themes/light_theme_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppThemes {
@@ -18,9 +19,16 @@ class AppThemes {
           iconColor: LightThemeColors.primary,
         ),
         iconTheme: IconThemeData(color: LightThemeColors.primary),
-        textTheme: GoogleFonts.latoTextTheme(
-          const TextTheme(bodyMedium: TextStyle(color: Colors.black)),
-        ),
+        textTheme: Get.locale == Locale.fromSubtags(languageCode: 'en')
+            ? GoogleFonts.latoTextTheme(
+                const TextTheme(
+                  bodyMedium: TextStyle(color: LightThemeColors.onSurface),
+                ),
+              )
+            : const TextTheme(
+                bodyMedium: TextStyle(
+                    color: LightThemeColors.onSurface, fontFamily: 'Graphic'),
+              ),
         colorScheme: const ColorScheme.light(
           brightness: Brightness.light,
           primary: LightThemeColors.primary,
@@ -45,10 +53,16 @@ class AppThemes {
           iconColor: DarkThemeColors.primary,
         ),
         iconTheme: IconThemeData(color: DarkThemeColors.primary),
-        textTheme: GoogleFonts.latoTextTheme(
-          const TextTheme(
-              bodyMedium: TextStyle(color: DarkThemeColors.onSurface)),
-        ),
+        textTheme: Get.locale == Locale.fromSubtags(languageCode: 'en')
+            ? GoogleFonts.latoTextTheme(
+                const TextTheme(
+                  bodyMedium: TextStyle(color: DarkThemeColors.onSurface),
+                ),
+              )
+            : const TextTheme(
+                bodyMedium: TextStyle(
+                    color: DarkThemeColors.onSurface, fontFamily: 'Graphic'),
+              ),
         colorScheme: const ColorScheme.dark(
           brightness: Brightness.dark,
           primary: DarkThemeColors.primary,

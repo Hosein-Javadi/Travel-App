@@ -1,10 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Common {
   static Color convertStringToColor(String hex) {
     final Color color = Color(int.parse(hex));
     return color;
   }
+ static void showMenuSnakBarInfo(BuildContext context) {
+    return WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        Get.snackbar(
+          '',
+          '',
+          duration: Duration(seconds: 5),
+          barBlur: 15,
+          colorText: Theme.of(context).colorScheme.onSurface,
+          icon: Icon(Icons.front_hand_outlined),
+          messageText: Text(
+            'snakBarMeesage'.tr,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          titleText: Text(
+            'Hey'.tr,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          dismissDirection: DismissDirection.startToEnd,
+          overlayBlur: 5,
+          isDismissible: true,
+        );
+      },
+    );
+  }
+
 }
 
 class ImageWithProgress extends StatelessWidget {

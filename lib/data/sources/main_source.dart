@@ -1,7 +1,8 @@
+
 import 'package:aspen_explore_application/objects/Area.dart';
 
 abstract class AppSources {
-  Future<List<AreaEntity>> getAll(AreaSort sortType);
+  Future<List<AreaEntity>> getAll(AreaSort sortType,bool isEnglish);
 }
 
 
