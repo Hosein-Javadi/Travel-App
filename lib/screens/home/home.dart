@@ -3,7 +3,6 @@ import 'package:aspen_explore_application/controllers/home/home_controller.dart'
 import 'package:aspen_explore_application/controllers/Theme/theme_controller.dart';
 import 'package:aspen_explore_application/controllers/translate/translate_controller.dart';
 import 'package:aspen_explore_application/data/common/common.dart';
-import 'package:aspen_explore_application/data/sources/local_database.dart';
 import 'package:aspen_explore_application/objects/Area.dart';
 import 'package:aspen_explore_application/screens/home/bloc/home_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';

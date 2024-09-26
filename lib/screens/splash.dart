@@ -46,10 +46,11 @@ class _SplashScreenState extends State<SplashScreen> {
       data: ThemeData(
         textTheme: TextTheme(
           bodyMedium: TextStyle(
-              color: Colors.white,
-              fontFamily: Get.locale == Locale.fromSubtags(languageCode: 'fa')
-                  ? 'Graphic'
-                  : 'lato'),
+            color: Colors.white,
+            fontFamily: Get.locale == Locale.fromSubtags(languageCode: 'fa')
+                ? 'Graphic'
+                : 'Lato_regular',
+          ),
         ),
       ),
       child: Scaffold(
@@ -110,7 +111,14 @@ class _SplashScreenState extends State<SplashScreen> {
                         child: Center(
                           child: Text(
                             'splashExplore'.tr,
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: Get.locale ==
+                                      Locale.fromSubtags(languageCode: 'fa')
+                                  ? 'Graphic'
+                                  : 'Lato_regular',
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -139,24 +147,17 @@ class CustomButton extends StatelessWidget {
   final Widget child;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: ontap,
-      child: Container(
-        width: Get.width,
-        // height: 45,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              themeData.colorScheme.primary,
-              themeData.colorScheme.primaryContainer
-            ],
-          ),
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(
+          themeData.colorScheme.primary,
         ),
-        child: child,
+        foregroundColor: WidgetStatePropertyAll(
+          themeData.colorScheme.onSurface,
+        ),
       ),
+      onPressed: ontap,
+      child: child,
     );
   }
 }

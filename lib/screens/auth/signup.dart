@@ -50,25 +50,35 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final String fontFamily =
+        Get.locale == Locale.fromSubtags(languageCode: 'fa')
+            ? 'Graphic'
+            : 'Lato_regular';
     return Theme(
       data: ThemeData(
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ButtonStyle(
-              backgroundColor:
-                  WidgetStatePropertyAll(Theme.of(context).colorScheme.surface),
-              foregroundColor: WidgetStatePropertyAll(
-                  Theme.of(context).colorScheme.onSurface),
-              shape: WidgetStatePropertyAll(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor:
+                WidgetStatePropertyAll(Theme.of(context).colorScheme.surface),
+            foregroundColor:
+                WidgetStatePropertyAll(Theme.of(context).colorScheme.onSurface),
+            shape: WidgetStatePropertyAll(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
           ),
-          inputDecorationTheme: InputDecorationTheme(
-            border: InputBorder.none,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(
+            fontFamily: fontFamily,
           ),
-          textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.black))),
+          border: InputBorder.none,
+        ),
+        textTheme: TextTheme(
+          bodyMedium: TextStyle(color: Colors.black, fontFamily: fontFamily),
+        ),
+      ),
       child: Scaffold(
         body: BlocProvider(
           create: (context) {
