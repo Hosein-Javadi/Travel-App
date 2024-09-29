@@ -413,6 +413,8 @@ class PopularSlider extends StatelessWidget {
     return CarouselOptions(
       scrollPhysics: BouncingScrollPhysics(),
       padEnds: false,
+      autoPlay: true,
+      autoPlayCurve: Curves.easeInOut,
       aspectRatio: 1.15,
       enableInfiniteScroll: false,
     );
@@ -421,7 +423,8 @@ class PopularSlider extends StatelessWidget {
   Positioned detailsSection(AreaEntity item, BuildContext context) {
     return Positioned.fill(
       child: Padding(
-        padding: const EdgeInsets.only(left: 24, bottom: 18, right: 24),
+        padding:
+            const EdgeInsets.only(left: 24, bottom: 18, top: 18, right: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -451,7 +454,7 @@ class PopularSlider extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   height: 40,
@@ -481,17 +484,17 @@ class PopularSlider extends StatelessWidget {
                   ),
                 ),
                 if (item.liked)
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 18, right: 18),
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Theme.of(context).colorScheme.surface),
-                    child: Icon(
-                      CupertinoIcons.heart_fill,
-                      color: Colors.red,
+                  Padding(
+                    padding:
+                        Get.locale == Locale.fromSubtags(languageCode: 'fa')
+                            ? const EdgeInsets.only(right: 18)
+                            : const EdgeInsets.only(left: 18),
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      foregroundColor: Colors.red,
+                      child: Icon(
+                        CupertinoIcons.heart_fill,
+                      ),
                     ),
                   ),
               ],
@@ -572,7 +575,9 @@ class HomeScreenRecomendedSection extends StatelessWidget {
         );
       },
       options: CarouselOptions(
+        autoPlay: true,
         scrollPhysics: BouncingScrollPhysics(),
+        autoPlayCurve: Curves.linear,
         enableInfiniteScroll: false,
         aspectRatio: 1.6,
         padEnds: false,
