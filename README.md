@@ -1,16 +1,33 @@
-# aspen_explore_application
 
-A new Flutter project.
+# Travel App
 
-## Getting Started
+This program provides an overview of Iran's tourist attractions and their facilities, developed exclusively for inclusion in a professional resume with no other intended use.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Authors
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [Hosein Javadi](https://www.github.com/Hosein-Javadi)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+## Features
+
+- **Light/dark mode toggle**: Switch between light and dark themes for better visibility.
+- **Translate mode toggle**: Easily translate text within the app.
+- **Android & iOS**: Available for both major mobile platforms.
+
+
+## Installation
+
+Get Andriod Output of App
+
+```bash
+flutter build apk
+```
+
+---
+Get IOS Output of App (Mac OS Required)
+
+```bash
+flutter build ios
+```
