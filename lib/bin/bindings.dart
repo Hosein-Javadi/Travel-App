@@ -11,8 +11,9 @@ class AppBindings extends Bindings {
   void dependencies() {
     Get.lazyPut(
       () => NavigationController(),
+      fenix: true,
     );
-    Get.put(AppTextController());
+    Get.lazyPut(() => AppTextController(),fenix: true);
 
     Get.lazyPut(
       () => AppThemeController(),

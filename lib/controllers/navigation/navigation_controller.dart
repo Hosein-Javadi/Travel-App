@@ -19,6 +19,7 @@ GlobalKey<NavigatorState> detailsScreen = GlobalKey();
 GlobalKey<NavigatorState> accountScreen = GlobalKey();
 
 class NavigationController extends GetxController {
+
   final screenKeys = {
     0: homeScreen,
     1: detailsScreen,

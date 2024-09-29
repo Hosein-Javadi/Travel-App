@@ -35,7 +35,6 @@ class Common {
       },
     );
   }
-
 }
 
 class ImageWithProgress extends StatelessWidget {

@@ -16,6 +16,10 @@ TextEditingController? sRePasswordController;
 TextEditingController? lEmailController;
 TextEditingController? lPasswordController;
 
+final String fontFamily = Get.locale == Locale.fromSubtags(languageCode: 'fa')
+    ? 'Graphic'
+    : 'Lato_regular';
+
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
@@ -50,10 +54,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String fontFamily =
-        Get.locale == Locale.fromSubtags(languageCode: 'fa')
-            ? 'Graphic'
-            : 'Lato_regular';
     return Theme(
       data: ThemeData(
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -71,12 +71,15 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
         inputDecorationTheme: InputDecorationTheme(
           labelStyle: TextStyle(
+            color: Theme.of(context).colorScheme.surface,
             fontFamily: fontFamily,
           ),
           border: InputBorder.none,
         ),
         textTheme: TextTheme(
-          bodyMedium: TextStyle(color: Colors.black, fontFamily: fontFamily),
+          bodyMedium: TextStyle(
+              color: Theme.of(context).colorScheme.surface,
+              fontFamily: fontFamily),
         ),
       ),
       child: Scaffold(
@@ -211,7 +214,14 @@ class LoginSection extends StatelessWidget {
                           width: Get.width,
                           height: 65,
                           child: AcceptButton(
-                            child: Text('Login'.tr),
+                            child: Text(
+                              'Login'.tr,
+                              style: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: fontFamily,
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -289,6 +299,14 @@ class AcceptButton extends StatelessWidget {
           WidgetsBinding.instance.addPostFrameCallback(
             (_) async {
               await Get.defaultDialog(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                titleStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                middleTextStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
                 title: 'Success'.tr,
                 middleText: 'Welcome!'.tr,
                 confirm: ElevatedButton(
@@ -488,7 +506,14 @@ class SingUpSection extends StatelessWidget {
                       width: Get.width,
                       height: 65,
                       child: AcceptButton(
-                        child: Text('Register'.tr),
+                        child: Text(
+                          'Register'.tr,
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: fontFamily,
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -555,6 +580,9 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: TextStyle(
+        color: themeData.colorScheme.surface,
+      ),
       enableInteractiveSelection: enableInteractiveSelection,
       inputFormatters: inputFormatter,
       controller: controller,

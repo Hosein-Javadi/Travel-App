@@ -140,11 +140,17 @@ class AccountItem extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(title),
+                Text(
+                  title,
+                ),
                 SizedBox(
                   width: 8,
                 ),
-                Text(caption),
+                Expanded(
+                  child: Text(
+                    caption,
+                  ),
+                ),
               ],
             )
           ],
